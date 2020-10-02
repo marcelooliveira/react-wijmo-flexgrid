@@ -23,7 +23,16 @@ export const Dashboard = () => {
     }
   }
 
-  return (<div className="container-fluid">
+  return (
+      <div className="card main-panel">
+        <div className="card-header">
+          <img className="grapecity-logo" src="logo.svg"/>
+        </div>
+        <div className="card-body">
+          <h5 className="card-title">Wijmo FlexGrid Demo</h5>
+          <p className="card-text">Building a Smart Data Table in React</p>
+          
+          <div className="container-fluid">
             <div className="row">
               <FlexGrid itemsSource={sales} initialized={initializeFlexGrid}>
                 <FlexGridColumn width={50} binding='id' header="ID" />
@@ -35,19 +44,27 @@ export const Dashboard = () => {
                 <FlexGridColumn width={100} binding='country' header="Country" />
               </FlexGrid>
             </div>
-            <div className="row">
+          </div>
+
+        </div>
+        <div className="card-footer">
+              <div className="row">
                 <div className="col-md-6 col-xs-12">
-                    <div className="form-inline well well-lg">
-                        <input type="file" className="form-control" style={{ width: '250px' }} id="importFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel.sheet.macroEnabled.12"/>
-                        <input type="button" onClick={load} className="btn btn-default" value="Import"/>
-                        <div className="checkbox">
-                            <label>
-                                <input value={includeColumnHeaders} type="checkbox"/> Include Column Header
-                            </label>
+                    <div className="form-inline well well-lg">          
+                          <div className="form-inline well well-lg">
+                              <input type="file" className="form-control" style={{ width: '250px' }} id="importFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel.sheet.macroEnabled.12"/>
+                              <input type="button" onClick={load} className="btn btn-default" value="Import"/>
+                              <div className="checkbox">
+                                  <label>
+                                      <input value={includeColumnHeaders} type="checkbox"/> Include Column Header
+                                  </label>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                     </div>
-                </div>
-            </div>
-          </div>);
+        </div>
+      </div>
+          );
 }
 
