@@ -1,10 +1,15 @@
 ﻿import '@grapecity/wijmo.styles/wijmo.css';
 import 'bootstrap/dist/css/bootstrap.css';
+import bsCustomFileInput from 'bs-custom-file-input'
 import '@grapecity/wijmo.react.grid';
 import React, { useState } from 'react';
 import { FlexGrid, FlexGridColumn } from '@grapecity/wijmo.react.grid';
 import * as wjcGridXlsx from "@grapecity/wijmo.grid.xlsx";
 import { recentSales } from "../data/data";
+
+document.addEventListener('DOMContentLoaded', function() {
+  bsCustomFileInput.init()
+});
 
 export const Dashboard = () => {
 
@@ -19,19 +24,32 @@ export const Dashboard = () => {
   var load = () => {
     let fileInput = document.getElementById("importFile");
     if (fileInput.files[0]) {
-        wjcGridXlsx.FlexGridXlsxConverter.loadAsync(flexGrid, fileInput.files[0], { includeColumnHeaders: includeColumnHeaders });
+        wjcGridXlsx.FlexGridXlsxConverter.loadAsync(flexGrid, fileInput.files[0], { includeColumnHeaders: includeColumnHeaders }, function (workbook) {
+          flexGrid.autoSizeColumns();
+     });
     }
+  }
+
+  var save = () => {
+    wjcGridXlsx.FlexGridXlsxConverter.saveAsync(flexGrid, {
+        includeColumnHeaders: includeColumnHeaders,
+        includeCellStyles: false,
+        formatItem: false
+    }, "FlexGrid.xlsx");
   }
 
   return (
       <div className="card main-panel">
         <div className="card-header">
-          <img className="grapecity-logo" src="logo.svg"/>
+          <span>
+            <img className="grapecity-logo" src="logo.svg"/>
+          </span>
         </div>
         <div className="card-body">
-          <h5 className="card-title">Wijmo FlexGrid Demo</h5>
-          <p className="card-text">Building a Smart Data Table in React</p>
-          
+        <h5>Wijmo FlexGrid Demo</h5>
+          <p>
+            Building a Smart Data Table in React
+          </p>          
           <div className="container-fluid">
             <div className="row">
               <FlexGrid itemsSource={sales} initialized={initializeFlexGrid}>
@@ -48,23 +66,21 @@ export const Dashboard = () => {
 
         </div>
         <div className="card-footer">
-              <div className="row">
-                <div className="col-md-6 col-xs-12">
-                    <div className="form-inline well well-lg">          
-                          <div className="form-inline well well-lg">
-                              <input type="file" className="form-control" style={{ width: '250px' }} id="importFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel.sheet.macroEnabled.12"/>
-                              <input type="button" onClick={load} className="btn btn-default" value="Import"/>
-                              <div className="checkbox">
-                                  <label>
-                                      <input value={includeColumnHeaders} type="checkbox"/> Include Column Header
-                                  </label>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                    </div>
+              
+          <div className="input-group">
+            <div className="custom-file">
+              <label className="custom-file-label" htmlFor="importFile" aria-describedby="inputGroupFileAddon02">Choose file</label>
+              <input type="file" className="custom-file-input" id="importFile"/>
+            </div>
+            <div className="input-group-prepend">
+              <input type="button" onClick={load} className="input-group-text" value="Import"/>
+            </div>
+            <div className="input-group-append">
+              <input type="button" onClick={save} className="input-group-text" value="Export"/>
+            </div>
+          </div>
+
         </div>
-      </div>
-          );
-}
+      </div>);
+      }
 
