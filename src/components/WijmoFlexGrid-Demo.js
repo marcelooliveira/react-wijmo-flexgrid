@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
   bsCustomFileInput.init()
 });
 
-export const Dashboard = () => {
+export const WijmoFlexGridDemo = () => {
 
   const [sales, setSales] = new useState(recentSales);
   const [flexGrid, setFlexGrid] = useState({});
@@ -82,5 +82,5 @@ export const Dashboard = () => {
 
         </div>
       </div>);
-      }
+    }
 

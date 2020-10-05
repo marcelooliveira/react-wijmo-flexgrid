@@ -1,10 +1,12 @@
 import React from 'react';
 import './App.css';
-import { Dashboard } from './components/Dashboard.js'
+import { OpenSourceTableDemo } from './components/OpenSourceTable-Demo.js'
+import { WijmoFlexGridDemo } from './components/WijmoFlexGrid-Demo.js'
 
 function App() {
   return (
-      <Dashboard/>
+    <OpenSourceTableDemo/>
+      // <WijmoFlexGridDemo/>
   );
 }
 
