@@ -13,6 +13,7 @@
     "jszip": "^3.5.0",
     "react": "^16.13.1",
     "react-data-grid": "5.0.1",
+    "react-data-grid-addons": "5.0.4",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.3"
   },

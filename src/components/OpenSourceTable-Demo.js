@@ -1,9 +1,23 @@
 ﻿import React, { useState } from 'react';
 import ReactDOM from "react-dom";
 import ReactDataGrid from "react-data-grid";
+// import DraggableContainer from "react-data-grid-addons";
 import { recentSales } from "../data/data";
+const {
+  DraggableHeader: { DraggableContainer }
+} = require("react-data-grid-addons");
 
 export const OpenSourceTableDemo = () => {
+
+  const [columns, setColumns] = new useState([
+    { key: "id", name: "Id", editable: true, sortable: true, resizable: true, draggable: true },
+    { key: "country", name: "Country", editable: true, sortable: true, resizable: true, draggable: true },
+    { key: "soldBy", name: "Sold by", editable: true, sortable: true, resizable: true, draggable: true },
+    { key: "client", name: "Client", editable: true, sortable: true, resizable: true, draggable: true },
+    { key: "description", name: "Description", editable: true, sortable: true, resizable: true, draggable: true },
+    { key: "value", name: "Value", editable: true, sortable: true, resizable: true, draggable: true },
+    { key: "itemCount", name: "Item Count", editable: true, sortable: true, resizable: true, draggable: true }
+  ]);
 
   const [sales, setSales] = new useState(recentSales);
 
@@ -26,6 +40,25 @@ export const OpenSourceTableDemo = () => {
     return sortDirection === "NONE" ? initialRows : [...rows].sort(comparer);
   };
 
+  const onHeaderDrop = (source, target) => {
+    var columnsCopy = columns.slice();
+    const columnSourceIndex = columns.findIndex(
+      i => i.key === source
+    );
+    const columnTargetIndex = columns.findIndex(
+      i => i.key === target
+    );
+
+    columnsCopy.splice(
+      columnTargetIndex,
+      0,
+      columnsCopy.splice(columnSourceIndex, 1)[0]
+    );
+
+    setColumns(columnsCopy.splice());
+    setColumns(columnsCopy);
+  };
+
   const load = () => {
 
   }
@@ -34,15 +67,7 @@ export const OpenSourceTableDemo = () => {
 
   }
 
-  const columns = [
-    { key: "id", name: "Id", editable: true, sortable: true },
-    { key: "country", name: "Country", editable: true, sortable: true },
-    { key: "soldBy", name: "Sold by", editable: true, sortable: true },
-    { key: "client", name: "Client", editable: true, sortable: true },
-    { key: "description", name: "Description", editable: true, sortable: true },
-    { key: "value", name: "Value", editable: true, sortable: true },
-    { key: "itemCount", name: "Item Count", editable: true, sortable: true }
-  ];
+
 
   return (
     <div className="card main-panel">
@@ -56,16 +81,18 @@ export const OpenSourceTableDemo = () => {
       </p>          
       <div className="container-fluid">
         <div className="row">
-        <ReactDataGrid
-            columns={columns}
-            rowGetter={i => sales[i]}
-            rowsCount={recentSales.length}
-            onGridRowsUpdated={onGridRowsUpdated}
-            enableCellSelect={true}
-            onGridSort={(sortColumn, sortDirection) =>
-              setSales(sortRows(sales, sortColumn, sortDirection))
-            }
-          />
+          <DraggableContainer onHeaderDrop={onHeaderDrop}>
+            <ReactDataGrid
+                columns={columns}
+                rowGetter={i => sales[i]}
+                rowsCount={recentSales.length}
+                onGridRowsUpdated={onGridRowsUpdated}
+                enableCellSelect={true}
+                onGridSort={(sortColumn, sortDirection) =>
+                  setSales(sortRows(sales, sortColumn, sortDirection))
+                }
+              />
+          </DraggableContainer>
         </div>
       </div>
 
