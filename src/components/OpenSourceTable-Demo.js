@@ -6,29 +6,42 @@ import { recentSales } from "../data/data";
 export const OpenSourceTableDemo = () => {
 
   const [sales, setSales] = new useState(recentSales);
-  const [flexGrid, setFlexGrid] = useState({});
-  const [includeColumnHeaders, setIncludeColumnHeaders] = useState(true);
 
-  var initializeFlexGrid = (flexGrid) => {
-      setFlexGrid(flexGrid);
+  const onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
+    const s = sales.slice();
+    for (let i = fromRow; i <= toRow; i++) {
+      s[i] = { ...s[i], ...updated };
+    }
+    setSales(s);
+  };
+
+  const sortRows = (initialRows, sortColumn, sortDirection) => rows => {
+    const comparer = (a, b) => {
+      if (sortDirection === "ASC") {
+        return a[sortColumn] > b[sortColumn] ? 1 : -1;
+      } else if (sortDirection === "DESC") {
+        return a[sortColumn] < b[sortColumn] ? 1 : -1;
+      }
+    };
+    return sortDirection === "NONE" ? initialRows : [...rows].sort(comparer);
+  };
+
+  const load = () => {
+
   }
 
-  var load = () => {
-
-  }
-
-  var save = () => {
+  const save = () => {
 
   }
 
   const columns = [
-    { key: "id", name: "Id", editable: true },
-    { key: "country", name: "Country", editable: true },
-    { key: "soldBy", name: "Sold by", editable: true },
-    { key: "client", name: "Client", editable: true },
-    { key: "description", name: "Description", editable: true },
-    { key: "value", name: "Value", editable: true },
-    { key: "itemCount", name: "Item Count", editable: true }
+    { key: "id", name: "Id", editable: true, sortable: true },
+    { key: "country", name: "Country", editable: true, sortable: true },
+    { key: "soldBy", name: "Sold by", editable: true, sortable: true },
+    { key: "client", name: "Client", editable: true, sortable: true },
+    { key: "description", name: "Description", editable: true, sortable: true },
+    { key: "value", name: "Value", editable: true, sortable: true },
+    { key: "itemCount", name: "Item Count", editable: true, sortable: true }
   ];
 
   return (
@@ -47,7 +60,11 @@ export const OpenSourceTableDemo = () => {
             columns={columns}
             rowGetter={i => sales[i]}
             rowsCount={recentSales.length}
+            onGridRowsUpdated={onGridRowsUpdated}
             enableCellSelect={true}
+            onGridSort={(sortColumn, sortDirection) =>
+              setSales(sortRows(sales, sortColumn, sortDirection))
+            }
           />
         </div>
       </div>
