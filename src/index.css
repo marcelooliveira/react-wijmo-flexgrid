@@ -11,14 +11,3 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
-.main-panel {
-  max-width: 80%;
-  margin: 0 auto;
-  float: none;
-  margin-top: 12px;  
-}
-
-.grapecity-logo {
-  height: 24px;
-}

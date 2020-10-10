@@ -1,3 +1,4 @@
+
 export const recentSales = [
     {
       id: 1,
@@ -90,4 +91,3 @@ export const recentSales = [
       itemCount: 40
     }
   ];
-  
